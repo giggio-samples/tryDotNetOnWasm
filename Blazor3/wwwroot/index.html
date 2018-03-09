@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Blazor3</title>
+    <base href="/" />
+</head>
+<body>
+    <script type="blazor-boot">
+    </script>
+    Número: <input id="numero" type="text" /><br />
+    Fatorial: <span id="resultado"></span><br />
+    <button id="calcula" onclick="calcular();" >Calcular</button><br />
+    <hr />
+    Texto: <input id="texto" type="text" /><br />
+    <button id="Echo" onclick="echo();" >Echo</button><br />
+    <span id="echoResult"></span><br />
+    <hr />
+    <script>
+        Blazor.registerFunction('done', param => console.log(`done: ${param}`));
+        function calcular() {
+            const numero = document.getElementById('numero').value;
+            let m = Blazor.platform.findMethod("Blazor3", "Blazor3", "Program", "Fatorial");
+            let res = Blazor.platform.callMethod(m, null, [Blazor.platform.toDotNetString(numero)])
+            const resultado = Blazor.platform.toJavaScriptString(res);
+            document.getElementById('resultado').innerHTML = resultado;
+        }
+        function echo() {
+            const numero = document.getElementById('texto').value;
+            let m = Blazor.platform.findMethod("Blazor3", "Blazor3", "Program", "Echo");
+            let res = Blazor.platform.callMethod(m, null, [Blazor.platform.toDotNetString(numero)])
+            const resultado = Blazor.platform.toJavaScriptString(res);
+            document.getElementById('echoResult').innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>
