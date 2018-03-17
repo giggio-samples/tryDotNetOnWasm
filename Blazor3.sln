@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor3", "Blazor3\Blazor3.csproj", "{07243E3E-46B6-476A-988A-E17B175CA714}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor3", "Blazor3\Blazor3.csproj", "{07243E3E-46B6-476A-988A-E17B175CA714}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F0A2D5B2-108F-45B4-9274-23666A3583F5}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,14 +8,54 @@
 <body>
     <script type="blazor-boot">
     </script>
+
+    <h2>Fatorial</h2>
     Número: <input id="numero" type="text" /><br />
     Fatorial: <span id="resultado"></span><br />
-    <button id="calcula" onclick="calcular();" >Calcular</button><br />
+    <button id="calcula" onclick="calcular();">Calcular</button><br />
     <hr />
+
+    <h2>Echo</h2>
     Texto: <input id="texto" type="text" /><br />
-    <button id="Echo" onclick="echo();" >Echo</button><br />
+    <button id="Echo" onclick="echo();">Echo</button><br />
     <span id="echoResult"></span><br />
     <hr />
+
+    <h2>Fatorial JS</h2>
+    Número: <input id="numeroFatorialJS" type="text" /><br />
+    Fatorial: <span id="resultadoFatorialJS"></span><br />
+    <button id="calcula" onclick="calcularFatorialJS();">Calcular</button><br />
+    <hr />
+
+    <h2>Desempenho C#</h2>
+    <button id="calcula" onclick="calcularDesempenhoCS();">Calcular</button><br />
+    Tempo C#: <span id="tempoDesempenhoCS"></span><br />
+    Tempo JS: <span id="tempojsDesempenhoCS"></span><br />
+    <hr />
+
+    <h2>Desempenho JS</h2>
+    <button id="calcula" onclick="calcularDesempenhoJS();">Calcular</button><br />
+    Tempo: <span id="tempoDesempenhoJS"></span><br />
+    <hr />
+
+    <h2>Desempenho C# não otimizado</h2>
+    <button id="calcula" onclick="calcularDesempenhoCSNaoOtimizado();">Calcular</button><br />
+    Tempo C#: <span id="tempoDesempenhoCSNaoOtimizado"></span><br />
+    Tempo JS: <span id="tempojsDesempenhoCSNaoOtimizado"></span><br />
+    <hr />
+
+    <h2>Desempenho JS não otimizado</h2>
+    <button id="calcula" onclick="calcularDesempenhoJSNaoOtimizado();">Calcular</button><br />
+    Tempo: <span id="tempoDesempenhoJSNaoOtimizado"></span><br />
+    <hr />
+
+    <h2>Desempenho C# e threads</h2>
+    <p>(Não clique, vai travar seu navegador e não retorna)</p>
+    <button id="calcula" onclick="calcularDesempenhoCSThreads();">Calcular</button><br />
+    Tempo C#: <span id="tempoDesempenhoCSThreads"></span><br />
+    Tempo JS: <span id="tempojsDesempenhoCSThreads"></span><br />
+    <hr />
+
     <script>
         Blazor.registerFunction('done', param => console.log(`done: ${param}`));
         function calcular() {
@@ -31,6 +71,99 @@
             let res = Blazor.platform.callMethod(m, null, [Blazor.platform.toDotNetString(numero)])
             const resultado = Blazor.platform.toJavaScriptString(res);
             document.getElementById('echoResult').innerHTML = resultado;
+        }
+    </script>
+
+    <script>
+        function fatorial(n) {
+            if (n <= 1) return -1;
+            var total = 1;
+            while (n > 1) {
+                total *= n;
+                n--;
+            }
+            return total;
+        }
+        function calcularFatorialJS() {
+            const numero = parseInt(document.getElementById('numeroFatorialJS').value);
+            const resultado = fatorial(numero);
+            document.getElementById('resultadoFatorialJS').innerHTML = resultado;
+        }
+    </script>
+
+    <script>
+        function calcularDesempenhoCS() {
+            var start = new Date();
+            let m = Blazor.platform.findMethod("Blazor3", "Blazor3", "Program", "Desempenho");
+            let res = Blazor.platform.callMethod(m, null, [])
+            const resultado = Blazor.platform.toJavaScriptString(res);
+            document.getElementById('tempoDesempenhoCS').innerHTML = resultado;
+            var end = new Date();
+            var ms = (end.getTime() - start.getTime());
+            document.getElementById('tempojsDesempenhoCS').innerHTML = ms;
+        }
+    </script>
+
+    <script>
+        function calcularDesempenhoJS() {
+            var start = new Date();
+            for (var i = 0; i < 1000000; i++) {
+                var res = fatorial(12);
+            }
+            var end = new Date();
+            var ms = (end.getTime() - start.getTime());
+            document.getElementById('tempoDesempenhoJS').innerHTML = ms;
+        }
+    </script>
+
+    <script>
+        function calcularDesempenhoCSNaoOtimizado() {
+            var start = new Date();
+            let m = Blazor.platform.findMethod("Blazor3", "Blazor3", "Program", "DesempenhoNaoOtimizado");
+            let res = Blazor.platform.callMethod(m, null, [])
+            const resultado = Blazor.platform.toJavaScriptString(res);
+            document.getElementById('tempoDesempenhoCSNaoOtimizado').innerHTML = resultado;
+            var end = new Date();
+            var ms = (end.getTime() - start.getTime());
+            document.getElementById('tempojsDesempenhoCSNaoOtimizado').innerHTML = ms;
+        }
+    </script>
+
+    <script>
+        function fatorialNaoOtimizado(n) {
+            if ((new Date().getMilliseconds % 2) === 0) {
+                n++;
+                if (n > 12) n = 12;
+            }
+            if (n <= 1) return -1;
+            var total = 1;
+            while (n > 1) {
+                total *= n;
+                n--;
+            }
+            return total;
+        }
+        function calcularDesempenhoJSNaoOtimizado() {
+            var start = new Date();
+            for (var i = 0; i < 1000000; i++) {
+                var res = fatorialNaoOtimizado(12);
+            }
+            var end = new Date();
+            var ms = (end.getTime() - start.getTime());
+            document.getElementById('tempoDesempenhoJSNaoOtimizado').innerHTML = ms;
+        }
+    </script>
+
+    <script>
+        function calcularDesempenhoCSThreads() {
+            var start = new Date();
+            let m = Blazor.platform.findMethod("Blazor3", "Blazor3", "Program", "DesempenhoThreads");
+            let res = Blazor.platform.callMethod(m, null, [])
+            const resultado = Blazor.platform.toJavaScriptString(res);
+            document.getElementById('tempoDesempenhoCSThreads').innerHTML = resultado;
+            var end = new Date();
+            var ms = (end.getTime() - start.getTime());
+            document.getElementById('tempojsDesempenhoCSThreads').innerHTML = ms;
         }
     </script>
 </body>
